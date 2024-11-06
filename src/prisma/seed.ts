@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+	await prisma.tarefas.deleteMany({});
 	await prisma.tarefas.createMany({
 		data: [
 			{

@@ -1,27 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../config/prisma";
 
-export async function handler2(req: NextApiRequest, res: NextApiResponse) {
-	if (req.method === "POST") {
-		const { nome, custo, data_limite, ordem_apresentacao } = req.body;
-		const novaTarefa = await prisma.tarefas.create({
-			data: {
-				nome,
-				custo,
-				data_limite: new Date(data_limite),
-				ordem_apresentacao,
-			},
-		});
-		res.status(201).json(novaTarefa);
-	} else {
-		res.status(405).end();
-	}
-}
-
-// pages/api/tarefas/add.ts
-// import { NextApiRequest, NextApiResponse } from 'next';
-// import prisma from '../../../lib/prisma';
-
+/**
+ * Cria uma nova tarefa.
+ *
+ * Espera um objeto com os campos `nome`, `custo` e `data_limite` no corpo da requisi o.
+ * Verifica se o nome j  existe e, se n o, a cria com a ordem de apresenta o maior + 1.
+ * Retorna a tarefa criada com status 201 ou um erro com status 400 ou 500.
+ *
+ * @param {NextApiRequest} req - O objeto de solicita o.
+ * @param {NextApiResponse} res - O objeto de resposta.
+ */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method === "POST") {
 		const { nome, custo, data_limite } = req.body;

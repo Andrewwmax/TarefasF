@@ -18,17 +18,17 @@
 
 .tarefas {
 	padding: 0 32px 0 32px;
-	/* padding-left: 64px;
-	padding-right: 64px; */
 }
 
 .tarefa {
 	display: grid;
-	grid-template-columns: 0.5fr 3fr 1fr 2fr 0.5fr 0.3fr;
+	grid-template-columns: 0.2fr 3fr 1fr 2fr 0.5fr;
 	align-items: center;
-	/* justify-items: center; */
-
 	gap: 16px;
+}
+
+.title {
+	font-size: 3em;
 }
 
 @media (prefers-color-scheme: dark) {

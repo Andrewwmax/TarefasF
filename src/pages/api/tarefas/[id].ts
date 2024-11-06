@@ -2,6 +2,29 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../config/prisma";
 
+/**
+ * Manipula as solicita es de API para uma tarefa espec fica identificada pelo seu ID.
+ *
+ * - Para solicita es DELETE: Apaga a tarefa com o ID especificado e reordena as
+ *   tarefas restantes com base na ordem de apresenta o. Retorna um status 204 se a
+ *   dele o for bem-sucedida, ou um status 500 com uma mensagem de erro se ocorrer
+ *   um erro.
+ *
+ * - Para solicita es PUT: Atualiza uma tarefa existente com novos dados fornecidos
+ *   no corpo da solicita o. Certifica-se de que o nome da tarefa seja nico (exceto
+ *   para a tarefa atual). Retorna um status 200 com os dados da tarefa atualizados
+ *   se a solicita o for bem-sucedida, ou um status 400 com uma mensagem de erro se
+ *   uma tarefa com o mesmo nome j  existir, ou um status 500 com uma mensagem de
+ *   erro se ocorrer um erro.
+ *
+ * - Para outros m todos de solicita o: Retorna um status 405 indicando que o
+ *   m todo n o   permitido.
+ *
+ * @param {NextApiRequest} req - O objeto de solicita o que cont m par metros de
+ *   query e dados do corpo da solicita o.
+ * @param {NextApiResponse} res - O objeto de resposta usado para enviar a
+ *   resposta HTTP.
+ */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const { id } = req.query;
 

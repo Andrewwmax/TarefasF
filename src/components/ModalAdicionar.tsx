@@ -14,6 +14,18 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import { Tarefa } from "@/interfaces/tarefa";
 
+/**
+ * Modal para adicionar uma tarefa.
+ *
+ * O componente recebe como propriedades:
+ * - `open`: um booleano que controla o estado de abertura do modal;
+ * - `options`: um objeto com o t tulo do modal;
+ * - `tarefa`: um objeto parcial com a tarefa a ser adicionada;
+ * - `onClose`: uma fun o que fecha o modal;
+ * - `handleTarefa`: uma fun o que recebe a tarefa adicionada e a salva.
+ *
+ * O componente retorna um JSX que representa o modal com os campos para adicionar a tarefa.
+ */
 const ModalAdicionarTarefa = ({
 	open,
 	options,

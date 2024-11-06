@@ -29,5 +29,8 @@ services:
         ports:
             - "5433:5432"
 
+    web:
+        command: "sh -c 'npm run migrate && npm run generate && npm run seed && npm run dev'"
+
 volumes:
     pgdata:

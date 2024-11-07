@@ -18,7 +18,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	const tarefas = await prisma.tarefas.findMany({
 		orderBy: { ordem_apresentacao: "asc" },
 	});
-	const formatarTarefas = tarefas.map((tarefa) => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const formatarTarefas = tarefas.map((tarefa: any) => {
 		return {
 			id: tarefa.id,
 			nome: tarefa.nome,

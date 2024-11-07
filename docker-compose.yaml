@@ -14,7 +14,7 @@ services:
             DATABASE_URL: postgres://postgres:postgres@db:5432/tarefas_db
         depends_on:
             - db
-        command: sh -c "npm install --force && npm run migrate && npm run generate && npm run seed && npm run dev && npm run dev"
+        command: sh -c "npm install --force && npm run migrate && npm run generate && npm run seed && npm run dev"
 
     # Serviço do PostgreSQL
     db:

@@ -45,13 +45,11 @@ export async function getTarefas() {
 		throw new Error("Erro ao carregar as tarefas: as tarefas não são um array");
 	}
 
-	console.log(tarefas);
-
 	tarefas.forEach((tarefa: Tarefa) => {
 		tarefa.data_limite = DateTime.fromJSDate(new Date(tarefa.data_limite as unknown as string));
 	});
 
-	console.log(tarefas);
+	// console.log(tarefas);
 
 	return tarefas;
 }
@@ -173,6 +171,7 @@ const reordernarTarefas = async (orderedTasks: Tarefa[], ordem_apresentacao: num
 		ordem_apresentacao: index + 1,
 	}));
 
+	console.log(data);
 	const response = await fetch("/api/tarefas/reorder", {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },

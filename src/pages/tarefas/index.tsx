@@ -264,8 +264,9 @@ export default function Home() {
 	 * @returns {void} Nada é retornado.
 	 */
 	const handleClickDeleteTarefa = async (req: Tarefa) => {
-		const deleted = await deleteTarefa(req);
-		if (!deleted) return;
+		/* const deleted =  */
+		await deleteTarefa(req);
+		// if (!deleted) return;
 		setTarefas(await getTarefas());
 		handleCloseEditarModal();
 	};

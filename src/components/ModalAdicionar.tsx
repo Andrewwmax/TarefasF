@@ -39,7 +39,6 @@ const ModalAdicionarTarefa = ({
 	onClose: () => void;
 	handleTarefa: (tarefa: Tarefa) => void;
 }) => {
-	// console.log(tarefa);
 	const [nome, setNome] = React.useState<string>("");
 	const [custo, setCusto] = React.useState<number>(0);
 	const [data_limite, setDataLimite] = React.useState<DateTime>(DateTime.now().plus({ days: 1 }));

@@ -16,7 +16,6 @@ import prisma from "../../../config/prisma";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method === "POST") {
 		const tarefasOrdenadas = req.body;
-		console.log({ tarefasOrdenadas: tarefasOrdenadas });
 		try {
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const [ordem_apresentacao, action, data] = [
@@ -36,7 +35,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 						data: { ordem_apresentacao: { set: -1 } },
 					});
 				}
-				// console.log({ taf: taf });
 				const tafe = await prisma.tarefas.findUnique({
 					where: { ordem_apresentacao: ordem_apresentacao - 1 },
 				});
@@ -56,25 +54,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 						data: { ordem_apresentacao: { set: ordem_apresentacao - 1 } },
 					});
 				}
-
-				// Caso a tarefa que seja reordenada para abaixo
 			} else {
-				// Caso a tarefa que seja reordenada para acima
-				await prisma.tarefas.update({
+				// Caso a tarefa que seja reordenada para abaixo
+				const taf = await prisma.tarefas.findUnique({
 					where: { ordem_apresentacao: ordem_apresentacao },
-					data: { ordem_apresentacao: { set: -1 } },
 				});
-
-				await prisma.tarefas.update({
+				if (taf) {
+					await prisma.tarefas.update({
+						where: { id: taf.id },
+						data: { ordem_apresentacao: { set: -1 } },
+					});
+				}
+				const tafe = await prisma.tarefas.findUnique({
 					where: { ordem_apresentacao: ordem_apresentacao + 1 },
-					data: { ordem_apresentacao: { set: ordem_apresentacao } },
 				});
+				if (tafe) {
+					await prisma.tarefas.update({
+						where: { id: tafe.id },
+						data: { ordem_apresentacao: { set: ordem_apresentacao } },
+					});
+				}
 
-				const tarefaAbaixoConsolidada = await prisma.tarefas.update({
+				const tafes = await prisma.tarefas.findUnique({
 					where: { ordem_apresentacao: -1 },
-					data: { ordem_apresentacao: { set: ordem_apresentacao + 1 } },
 				});
-				console.log(tarefaAbaixoConsolidada);
+				if (tafes) {
+					await prisma.tarefas.update({
+						where: { id: tafes.id },
+						data: { ordem_apresentacao: { set: ordem_apresentacao + 1 } },
+					});
+				}
 			}
 
 			res.status(200).json({ message: "Ordem atualizada com sucesso" });

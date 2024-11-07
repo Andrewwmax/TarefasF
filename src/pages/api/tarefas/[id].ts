@@ -14,14 +14,14 @@ import prisma from "../../../config/prisma";
  *   no corpo da solicita o. Certifica-se de que o nome da tarefa seja nico (exceto
  *   para a tarefa atual). Retorna um status 200 com os dados da tarefa atualizados
  *   se a solicita o for bem-sucedida, ou um status 400 com uma mensagem de erro se
- *   uma tarefa com o mesmo nome j  existir, ou um status 500 com uma mensagem de
- *   erro se ocorrer um erro.
+ *   uma tarefa com o mesmo nome já existir, ou um status 500 com uma mensagem de
+ *   erro.
  *
- * - Para outros m todos de solicita o: Retorna um status 405 indicando que o
- *   m todo n o   permitido.
+ * - Para outros m todos de solicitação: Retorna um status 405 indicando que não é
+ * 	 permitido.
  *
- * @param {NextApiRequest} req - O objeto de solicita o que cont m par metros de
- *   query e dados do corpo da solicita o.
+ * @param {NextApiRequest} req - O objeto de solicita o que contém par metros de
+ *   query e dados do corpo da solicitação.
  * @param {NextApiResponse} res - O objeto de resposta usado para enviar a
  *   resposta HTTP.
  */
@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			const deletada = await prisma.tarefas.delete({
 				where: { id: Number(id) },
 			});
-
+			// console.log(deletada);
 			// Reordena as tarefas com base na ordem de apresentacao
 			// const reordenado =
 			await prisma.tarefas.updateMany({

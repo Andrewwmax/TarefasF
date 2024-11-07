@@ -139,8 +139,8 @@ const deleteTarefa = async (req: Tarefa) => {
 		const response = await fetch(`/api/tarefas/${req.id}`, {
 			method: "DELETE",
 		});
-
-		if (response.ok) {
+		console.log(response);
+		if (response.status >= 200 && response.status <= 300) {
 			return true;
 		} else {
 			alert("Erro ao excluir a tarefa");
@@ -171,13 +171,13 @@ const reordernarTarefas = async (orderedTasks: Tarefa[], ordem_apresentacao: num
 		ordem_apresentacao: index + 1,
 	}));
 
-	console.log(data);
-	const response = await fetch("/api/tarefas/reorder", {
+	// console.log(data);
+	/* const response =  */
+	await fetch("/api/tarefas/reorder", {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({ ordem_apresentacao: ordem_apresentacao, action: action, data: data }),
 	});
-	console.log(response);
 };
 
 export default function Home() {

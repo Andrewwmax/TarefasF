@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../config/prisma";
 
 /**
+ * @deprecated
  * Manipula solicita es de API para excluir uma tarefa.
  *
  * - Para solicita es DELETE: Exclui a tarefa com o ID especificado no corpo da solicita o.
@@ -15,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	if (req.method === "DELETE") {
 		const { id } = req.body;
 		await prisma.tarefas.delete({
-			where: { id },
+			where: { id: Number(id) },
 		});
 		res.status(204).end();
 	} else {

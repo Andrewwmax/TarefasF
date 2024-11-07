@@ -33,7 +33,7 @@ import { Tarefa } from "@/interfaces/tarefa";
  * @throws {Error} Se a resposta da API não for bem-sucedida ou se os dados não forem válidos.
  */
 export async function getTarefas() {
-	const res = await fetch("http://localhost:3000/api/list");
+	const res = await fetch("/api/list");
 
 	if (!res.ok) {
 		throw new Error(`Erro ao carregar as tarefas: ${res.status} - ${res.statusText}`);

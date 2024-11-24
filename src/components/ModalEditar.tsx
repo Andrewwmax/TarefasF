@@ -93,6 +93,7 @@ const ModalEditarTarefa = ({
 					id="idnome"
 					label="Nome"
 					variant="outlined"
+					autoFocus
 					required
 					value={nome}
 					onChange={(e) => setNome(e.target.value)}

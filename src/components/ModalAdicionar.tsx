@@ -45,6 +45,8 @@ const ModalAdicionarTarefa = ({
 	const [custoError, setCustoError] = React.useState<boolean | string>(false);
 	const [nomeError, setNomeError] = React.useState<boolean | string>(false);
 
+	const LIMITE_MINIMO = 0.001; // Ajuste para o limite desejado
+
 	const style = {
 		position: "absolute",
 		top: "50%",
@@ -69,9 +71,16 @@ const ModalAdicionarTarefa = ({
 			setCustoError("O custo deve ser maior que zero.");
 			// alert("O custo deve ser maior que zero.");
 			setCusto(null as unknown as number);
+		} else if (valor < LIMITE_MINIMO) {
+			setCustoError(`O custo deve ser maior ou igual a ${LIMITE_MINIMO}.`);
+			// alert("O custo deve ser menor que o limite minimo definido (0.001).");
+			setCusto(null as unknown as number);
 		} else if (valor > Number.MAX_SAFE_INTEGER) {
 			setCustoError("O valor é muito grande.");
 			// alert("O valor é muito grande.");
+			setCusto(null as unknown as number);
+		} else if (valor < Number.MIN_SAFE_INTEGER) {
+			setCustoError("O valor é muito pequeno.");
 			setCusto(null as unknown as number);
 		} else {
 			setCustoError(false);

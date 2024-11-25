@@ -1,7 +1,7 @@
 // Schema ORM do modelo para o banco de dados Postgres
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL_DEV")
+  url      = env("DATABASE_URL")
 }
 
 generator client {

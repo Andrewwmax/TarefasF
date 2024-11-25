@@ -60,6 +60,8 @@ const ModalEditarTarefa = ({
 	onClose: () => void;
 	handleTarefa: (tarefa: Tarefa) => void;
 }) => {
+	const [custoError, setCustoError] = React.useState(false);
+
 	const style = {
 		position: "absolute",
 		top: "50%",
@@ -100,12 +102,22 @@ const ModalEditarTarefa = ({
 				/>
 				<br />
 				<TextField
+					error={custoError}
 					id="idCusto"
 					label="Custo"
 					variant="outlined"
 					required
 					value={custo}
-					onChange={(e) => setCusto(Number(e.target.value))}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+						const valor = Number(e.target.value.replace(",", "."));
+						if (isNaN(valor) || valor <= 0) {
+							setCustoError(true);
+							setCusto(null as unknown as number);
+						} else {
+							setCustoError(false);
+							setCusto(valor);
+						}
+					}}
 				/>
 				<br />
 

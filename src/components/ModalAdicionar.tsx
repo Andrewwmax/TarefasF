@@ -39,9 +39,10 @@ const ModalAdicionarTarefa = ({
 	onClose: () => void;
 	handleTarefa: (tarefa: Tarefa) => void;
 }) => {
-	const [nome, setNome] = React.useState<string>("");
-	const [custo, setCusto] = React.useState<number>(0);
+	const [nome, setNome] = React.useState<string>(null as unknown as string);
+	const [custo, setCusto] = React.useState<number>(null as unknown as number);
 	const [data_limite, setDataLimite] = React.useState<DateTime>(DateTime.now().plus({ days: 1 }));
+	const [custoError, setCustoError] = React.useState(false);
 
 	const style = {
 		position: "absolute",
@@ -56,6 +57,16 @@ const ModalAdicionarTarefa = ({
 		alignItens: "center",
 		boxShadow: 24,
 		padding: 4,
+	};
+	const handleCustoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const valor = Number(e.target.value.replace(",", "."));
+		if (isNaN(valor) || valor <= 0) {
+			setCustoError(true);
+			setCusto(null as unknown as number);
+		} else {
+			setCustoError(false);
+			setCusto(valor);
+		}
 	};
 
 	return (
@@ -83,13 +94,14 @@ const ModalAdicionarTarefa = ({
 				/>
 				<br />
 				<TextField
+					error={custoError}
 					id="idCusto"
 					label="Custo"
 					variant="outlined"
 					type="number"
 					required
 					value={custo}
-					onChange={(e) => setCusto(Number(e.target.value))}
+					onChange={handleCustoChange}
 				/>
 				<br />
 				<LocalizationProvider dateAdapter={AdapterLuxon}>

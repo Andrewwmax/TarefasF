@@ -44,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			// Retorna se a exclusão for bem-sucedida
 			res.status(204).end();
 		} catch (error) {
-			res.status(500).json({ error: "Erro ao excluir a tarefa" + error });
+			res.status(500).json({ error: "Erro ao excluir a tarefa: " + error });
 		}
 	} else if (req.method === "PUT") {
 		const { nome, custo, data_limite } = req.body;
@@ -69,7 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 			res.status(200).json(tarefaAtualizada);
 		} catch (error) {
-			res.status(500).json({ error: "Erro ao atualizar a tarefa" + error });
+			res.status(500).json({ error: "Erro ao atualizar a tarefa: " + error });
 		}
 	} else {
 		res.status(405).json({ error: "Método não permitido" });

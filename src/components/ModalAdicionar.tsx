@@ -8,6 +8,7 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
+import { NumericFormat } from "react-number-format";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -61,32 +62,6 @@ const ModalAdicionarTarefa = ({
 		boxShadow: 24,
 		padding: 4,
 	};
-	const handleCustoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const valor = Number(e.target.value.replace(",", "."));
-		if (isNaN(valor)) {
-			setCustoError("Por favor, insira um número válido.");
-			// alert("Por favor, insira um número válido.");
-			setCusto(null as unknown as number);
-		} else if (valor <= 0) {
-			setCustoError("O custo deve ser maior que zero.");
-			// alert("O custo deve ser maior que zero.");
-			setCusto(null as unknown as number);
-		} else if (valor < LIMITE_MINIMO) {
-			setCustoError(`O custo deve ser maior ou igual a ${LIMITE_MINIMO}.`);
-			// alert("O custo deve ser menor que o limite minimo definido (0.001).");
-			setCusto(null as unknown as number);
-		} else if (valor > Number.MAX_SAFE_INTEGER) {
-			setCustoError("O valor é muito grande.");
-			// alert("O valor é muito grande.");
-			setCusto(null as unknown as number);
-		} else if (valor < Number.MIN_SAFE_INTEGER) {
-			setCustoError("O valor é muito pequeno.");
-			setCusto(null as unknown as number);
-		} else {
-			setCustoError(false);
-			setCusto(valor);
-		}
-	};
 
 	return (
 		<Modal
@@ -121,17 +96,35 @@ const ModalAdicionarTarefa = ({
 					}}
 				/>
 				<br />
-				<TextField
+				<NumericFormat
 					id="idCusto"
 					label="Custo"
 					variant="outlined"
-					type="number"
-					defaultValue={""}
 					required
+					helperText={custoError as string}
 					value={custo}
-					error={custoError as boolean}
-					helperText={custoError}
-					onChange={handleCustoChange}
+					customInput={TextField}
+					thousandSeparator
+					onValueChange={(values) => {
+						const inputValue = values.floatValue!;
+						setCusto(values.floatValue!);
+						if (isNaN(inputValue)) {
+							setCustoError("Por favor, insira um número válido.");
+							setCusto(null as unknown as number);
+						} else if (inputValue <= 0) {
+							setCustoError("O custo deve ser maior que zero.");
+							setCusto(null as unknown as number);
+						} else if (inputValue < LIMITE_MINIMO) {
+							setCustoError(`O custo deve ser maior ou igual a ${LIMITE_MINIMO}.`);
+							setCusto(null as unknown as number);
+						} else if (inputValue >= Number.MAX_SAFE_INTEGER) {
+							setCustoError("O valor é muito grande.");
+							setCusto(null as unknown as number);
+						} else {
+							setCustoError(false);
+							setCusto(inputValue);
+						}
+					}}
 				/>
 				<br />
 				<LocalizationProvider dateAdapter={AdapterLuxon}>

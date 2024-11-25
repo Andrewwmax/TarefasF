@@ -112,7 +112,8 @@ const editTarefa = async (req: Tarefa) => {
 			alert("Tarefa atualizada com sucesso!");
 		} else {
 			const errorData = await response.json();
-			alert(errorData.error || "Erro ao atualizar tarefa");
+			alert(/* errorData.error || */ "Erro ao atualizar tarefa");
+			console.error(process.env.NODE_ENV === "development" ? errorData.error : "Erro ao atualizar tarefa");
 		}
 	} catch (error) {
 		console.error("Erro ao atualizar tarefa:", error);
@@ -144,7 +145,8 @@ const deleteTarefa = async (req: Tarefa) => {
 		if (response.status >= 200 && response.status <= 300) {
 			return true;
 		} else {
-			alert("Erro ao excluir a tarefa");
+			alert(/* errorData.error || */ "Erro ao deletar tarefa");
+			// console.error(process.env.NODE_ENV === "development" ? errorData.error : "Erro ao deletar tarefa");
 		}
 	} catch (error) {
 		console.error("Erro ao excluir a tarefa:", error);

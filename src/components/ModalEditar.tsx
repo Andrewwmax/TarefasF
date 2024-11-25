@@ -8,6 +8,7 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
+import { NumericFormat } from "react-number-format";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -62,6 +63,7 @@ const ModalEditarTarefa = ({
 }) => {
 	const [custoError, setCustoError] = React.useState<boolean | string>(false);
 	const [nomeError, setNomeError] = React.useState<boolean | string>(false);
+	const LIMITE_MINIMO = 0.001; // Ajuste para o limite desejado
 
 	const style = {
 		position: "absolute",
@@ -111,37 +113,37 @@ const ModalEditarTarefa = ({
 					}}
 				/>
 				<br />
-				<TextField
+				<NumericFormat
 					id="idCusto"
 					label="Custo"
 					variant="outlined"
 					required
-					value={custo}
-					defaultValue={""}
-					error={custoError as boolean}
 					helperText={custoError as string}
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						const valor = Number(e.target.value.replace(",", "."));
-						if (isNaN(valor)) {
+					value={custo}
+					customInput={TextField}
+					thousandSeparator
+					onValueChange={(values) => {
+						const inputValue = values.floatValue!;
+						setCusto(values.floatValue!);
+						if (isNaN(inputValue)) {
 							setCustoError("Por favor, insira um número válido.");
-							// alert("Por favor, insira um número válido.");
 							setCusto(null as unknown as number);
-						} else if (valor <= 0) {
+						} else if (inputValue <= 0) {
 							setCustoError("O custo deve ser maior que zero.");
-							// alert("O custo deve ser maior que zero.");
 							setCusto(null as unknown as number);
-						} else if (valor > Number.MAX_SAFE_INTEGER) {
+						} else if (inputValue < LIMITE_MINIMO) {
+							setCustoError(`O custo deve ser maior ou igual a ${LIMITE_MINIMO}.`);
+							setCusto(null as unknown as number);
+						} else if (inputValue >= Number.MAX_SAFE_INTEGER) {
 							setCustoError("O valor é muito grande.");
-							// alert("O valor é muito grande.");
 							setCusto(null as unknown as number);
 						} else {
 							setCustoError(false);
-							setCusto(valor);
+							setCusto(inputValue);
 						}
 					}}
 				/>
 				<br />
-
 				<LocalizationProvider dateAdapter={AdapterLuxon}>
 					<DatePicker
 						label="Data Limite"
@@ -151,7 +153,6 @@ const ModalEditarTarefa = ({
 						onChange={(newValue) => setDataLimite(newValue as DateTime)}
 					/>
 				</LocalizationProvider>
-
 				<br />
 				<Button
 					fullWidth

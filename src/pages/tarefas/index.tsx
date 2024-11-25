@@ -79,10 +79,11 @@ const postTarefa = async (req: Tarefa) => {
 			alert("Tarefa adicionada com sucesso!");
 		} else {
 			const errorData = await response.json();
-			alert(errorData.error || "Erro ao adicionar tarefa");
+			alert(/* errorData.error || */ "Erro ao adicionar tarefa");
+			console.error(process.env.NODE_ENV === "development" ? errorData.error : "Erro ao adicionar tarefa");
 		}
 	} catch (error) {
-		console.error("Erro ao adicionar tarefa:", error);
+		console.error("Erro ao adicionar tarefa: ", error);
 	}
 };
 

@@ -60,7 +60,8 @@ const ModalEditarTarefa = ({
 	onClose: () => void;
 	handleTarefa: (tarefa: Tarefa) => void;
 }) => {
-	const [custoError, setCustoError] = React.useState(false);
+	const [custoError, setCustoError] = React.useState<boolean | string>(false);
+	const [nomeError, setNomeError] = React.useState<boolean | string>(false);
 
 	const style = {
 		position: "absolute",
@@ -98,20 +99,40 @@ const ModalEditarTarefa = ({
 					autoFocus
 					required
 					value={nome}
-					onChange={(e) => setNome(e.target.value)}
+					error={nomeError as boolean}
+					helperText={nomeError as string}
+					onChange={(e) => {
+						if (e.target.value.trim() === "") {
+							setNomeError("O nome da tarefa não pode ser vazio");
+						} else {
+							setNomeError(false);
+						}
+						setNome(e.target.value);
+					}}
 				/>
 				<br />
 				<TextField
-					error={custoError}
 					id="idCusto"
 					label="Custo"
 					variant="outlined"
 					required
 					value={custo}
+					defaultValue={""}
+					error={custoError as boolean}
+					helperText={custoError as string}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 						const valor = Number(e.target.value.replace(",", "."));
-						if (isNaN(valor) || valor <= 0) {
-							setCustoError(true);
+						if (isNaN(valor)) {
+							setCustoError("Por favor, insira um número válido.");
+							// alert("Por favor, insira um número válido.");
+							setCusto(null as unknown as number);
+						} else if (valor <= 0) {
+							setCustoError("O custo deve ser maior que zero.");
+							// alert("O custo deve ser maior que zero.");
+							setCusto(null as unknown as number);
+						} else if (valor > Number.MAX_SAFE_INTEGER) {
+							setCustoError("O valor é muito grande.");
+							// alert("O valor é muito grande.");
 							setCusto(null as unknown as number);
 						} else {
 							setCustoError(false);

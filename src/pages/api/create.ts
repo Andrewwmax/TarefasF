@@ -42,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 			res.status(201).json(novaTarefa);
 		} catch (error) {
-			res.status(500).json({ error: "Erro ao criar a tarefa" + error });
+			res.status(500).json({ error: "Erro ao criar a tarefa " + error });
 		}
 	} else {
 		res.status(405).json({ error: "Método não permitido" });

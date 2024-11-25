@@ -42,7 +42,8 @@ const ModalAdicionarTarefa = ({
 	const [nome, setNome] = React.useState<string>(null as unknown as string);
 	const [custo, setCusto] = React.useState<number>(null as unknown as number);
 	const [data_limite, setDataLimite] = React.useState<DateTime>(DateTime.now().plus({ days: 1 }));
-	const [custoError, setCustoError] = React.useState(false);
+	const [custoError, setCustoError] = React.useState<boolean | string>(false);
+	const [nomeError, setNomeError] = React.useState<boolean | string>(false);
 
 	const style = {
 		position: "absolute",
@@ -60,8 +61,17 @@ const ModalAdicionarTarefa = ({
 	};
 	const handleCustoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const valor = Number(e.target.value.replace(",", "."));
-		if (isNaN(valor) || valor <= 0) {
-			setCustoError(true);
+		if (isNaN(valor)) {
+			setCustoError("Por favor, insira um número válido.");
+			// alert("Por favor, insira um número válido.");
+			setCusto(null as unknown as number);
+		} else if (valor <= 0) {
+			setCustoError("O custo deve ser maior que zero.");
+			// alert("O custo deve ser maior que zero.");
+			setCusto(null as unknown as number);
+		} else if (valor > Number.MAX_SAFE_INTEGER) {
+			setCustoError("O valor é muito grande.");
+			// alert("O valor é muito grande.");
 			setCusto(null as unknown as number);
 		} else {
 			setCustoError(false);
@@ -90,17 +100,28 @@ const ModalAdicionarTarefa = ({
 					autoFocus
 					required
 					value={nome}
-					onChange={(e) => setNome(e.target.value)}
+					error={nomeError as boolean}
+					helperText={nomeError as string}
+					onChange={(e) => {
+						if (e.target.value.trim() === "") {
+							setNomeError("O nome da tarefa não pode ser vazio");
+						} else {
+							setNomeError(false);
+						}
+						setNome(e.target.value);
+					}}
 				/>
 				<br />
 				<TextField
-					error={custoError}
 					id="idCusto"
 					label="Custo"
 					variant="outlined"
 					type="number"
+					defaultValue={""}
 					required
 					value={custo}
+					error={custoError as boolean}
+					helperText={custoError}
 					onChange={handleCustoChange}
 				/>
 				<br />
@@ -125,8 +146,8 @@ const ModalAdicionarTarefa = ({
 							data_limite,
 							ordem_apresentacao: tarefa.ordem_apresentacao!,
 						});
-						setNome("");
-						setCusto(0);
+						setNome(null as unknown as string);
+						setCusto(null as unknown as number);
 						setDataLimite(DateTime.now().plus({ days: 1 }));
 					}}
 					style={{ marginRight: "10px" }}
